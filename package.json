@@ -1,0 +1,33 @@
+{
+    "name": "asyncapi-angular-template",
+    "version": "0.0.1",
+    "description": "A template that generates a Angular client using MQTT.",
+    "generator": {
+        "renderer": "react",
+        "apiVersion": "v1",
+        "generator": ">=1.10.0 <2.0.0",
+        "supportedProtocols": [
+            "mqtt",
+            "kafka",
+            "ws"
+        ]
+    },
+    "dependencies": {
+        "@asyncapi/generator-react-sdk": "^0.2.25",
+        "@asyncapi/parser": "^2.1.0"
+    },
+    "devDependencies": {
+        "prettier": "^2.8.3",
+        "rimraf": "^5.0.0",
+        "typescript": "^5.1.6"
+    },
+    "config": {
+        "outputDir": "./output"
+    },
+    "scripts": {
+        "generate": "ag ./specs/asyncapi.yml ./ --output $npm_package_config_outputDir/client-ts --force-write",
+        "typescript-transpile": "npx tsc $npm_package_config_outputDir/**/*.ts --outDir $npm_package_config_outputDir/client-js",
+        "prettier-format": "prettier --write $npm_package_config_outputDir/**/*.{js,ts} --config ./.prettierrc",
+        "generate-pipeline": "npm run generate && npm run prettier-format"
+    }
+}
