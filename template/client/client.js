@@ -1,6 +1,7 @@
 import { AsyncAPIDocument } from '@asyncapi/parser';
 import React from 'react';
-import Client from './client/client';
+import Models from './models/model';
+import Services from './services/services';
 
 /**
  * @typedef TemplateParameters
@@ -11,8 +12,9 @@ import Client from './client/client';
  * Return the correct channel functions for the test client on whether a channel is `pubSub` or `requestReply`
  * @param {{asyncapi: AsyncAPIDocument, params?: TemplateParameters}} _
  */
-export default function ({ asyncapi, params }) {
-  return (
-    <Client asyncapi={asyncapi} params={params} />
-  );
+export default function Client({ asyncapi, params }) {
+    return [
+        <Models />,
+        <Services />
+    ];
 }
