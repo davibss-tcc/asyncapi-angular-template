@@ -1,6 +1,7 @@
-import { File, Text } from '@asyncapi/generator-react-sdk';
-import { AsyncAPIDocument } from '@asyncapi/parser';
+import { AsyncAPIDocument, Channel } from '@asyncapi/parser';
 import React from 'react';
+import ServiceComponent from '../../../components/ServiceComponent';
+import { File, Text } from '@asyncapi/generator-react-sdk';
 
 /**
  * @typedef TemplateParameters
@@ -12,15 +13,15 @@ import React from 'react';
  * @param {{asyncapi: AsyncAPIDocument, params?: TemplateParameters}} _
  */
 export default function Services({ asyncapi, params }) {
-    return [
-        <File name='services.ts'>
-            <Text>
-                {
-`//GENERATED CODE
+    /**
+     * @type {Channel[]}
+     */
+    const channels = asyncapi.channels().collections;
 
-`
-                }
-            </Text>
-        </File>
-    ];
+    var generatedFiles = [];
+    for (let channel of channels) {
+        generatedFiles.push(ServiceComponent({channel: channel}));
+    }
+
+    return generatedFiles;
 }

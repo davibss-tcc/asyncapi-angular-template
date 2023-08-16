@@ -5,7 +5,7 @@ import { Text } from '@asyncapi/generator-react-sdk';
  * @param {string} generateInitialize
  * @returns 
  */
-export function RenderEnum(model, generateInitialize) {
+export function EnumComponent(model, generateInitialize) {
     const enumName = model.name;
     const enumConstants = model.values.map(value => value.value.slice(1,-1))
 

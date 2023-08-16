@@ -1,8 +1,8 @@
-import { File } from '@asyncapi/generator-react-sdk';
+import { File, Text } from '@asyncapi/generator-react-sdk';
 import { AsyncAPIDocument } from '@asyncapi/parser';
 import React from 'react';
 import { TypeScriptGenerator, FormatHelpers, TS_COMMON_PRESET, ConstrainedEnumModel } from '@asyncapi/modelina';
-import { RenderEnum } from '../../../components/renderEnum';
+import { EnumComponent } from '../../../components/EnumComponent';
 
 /**
  * @typedef TemplateParameters
@@ -31,11 +31,30 @@ export default async function Models({ asyncapi, params }) {
     generatedModels.forEach(generatedModel => {
         const modelFileName = `${FormatHelpers.toPascalCase(generatedModel.modelName)}.ts`;
         if (generatedModel.model instanceof ConstrainedEnumModel) {
-            files.push(<File name={modelFileName}>{RenderEnum(generatedModel.model, params.initializeEnum)}</File>);
+            files.push(<File name={modelFileName}>{EnumComponent(generatedModel.model, params.initializeEnum)}</File>);
         } else {
             files.push(<File name={modelFileName}>{generatedModel.result}</File>);
         }
     });
+
+    files.push((
+    <File name='index.ts'>
+        <Text>
+{`
+${generatedModels.map(generatedModel => {
+    const modelFileName = `${FormatHelpers.toPascalCase(generatedModel.modelName)}`;
+    return (
+`import ${modelFileName} from \'./${modelFileName}\';`
+    );
+}).join("\n")}
+
+export {
+    ${generatedModels.map(generatedModel => `${FormatHelpers.toPascalCase(generatedModel.modelName)}`)}
+}
+`}
+        </Text>
+    </File>
+    ));
     
     return files;
 }
