@@ -2,13 +2,7 @@ import { File, Text } from '@asyncapi/generator-react-sdk';
 import { Channel } from "@asyncapi/parser";
 import SubscriptionComponent from './SubscriptionComponent';
 import PublishComponent from './PublishComponent';
-
-function getSanitizedChannel(channel) {
-    var channelName = channel.id();
-    channelName = channelName.replace("/", "_");
-    channelName = channelName.replace("\\", "_");
-    return channelName;
-}
+import { sanitizeString } from '../util/sanitizeString';
 
 function getRequiredSchemas(channel) {
     var operations = channel.operations().collections;
@@ -18,12 +12,24 @@ function getRequiredSchemas(channel) {
     return importSchemas;
 }
 
-export default function ServiceComponent({ channel }) {
-    var channelName = getSanitizedChannel(channel);
+export default function MQTTServiceComponent({ servers, channel }) {
+    var channelName = sanitizeString(channel.id());
     
     var fileName = `${channelName}-mqtt-service.ts`;
 
     var requiredSchemas = getRequiredSchemas(channel);
+
+    var subscribeOperation = undefined;
+    var publishOperation = undefined;
+
+    var allOperations = channel.messages().collections.flatMap(m => m.operations().collections);
+    for (let operation of allOperations) {
+        if (operation.action() === 'publish') {
+            publishOperation = operation;
+        } else if (operation.action() === 'subscribe') {
+            subscribeOperation = operation;
+        }
+    }
 
     return (
 <File name={fileName}>
@@ -34,6 +40,10 @@ import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subject, Subscription } from 'rxjs';
 import { ${requiredSchemas} } from '../models';
 import { environment } from '../environments/environment.development';
+${servers.map(server => {
+    return `import { ${server.url()} } from '${`environment.${protocol}.${serverName}.ts`}'`;
+})}
+
 
 @Injectable({
 providedIn: 'root'
@@ -42,6 +52,8 @@ export class ${channelName}Service {
 
     private _mqttService: MqttService;
     private client: any;
+
+    private subscription${channelName}: Subscription | undefined;
 
     private MQTT_SERVICE_OPTIONS = {
         hostname: environment.broker.hostname,
@@ -75,8 +87,8 @@ export class ${channelName}Service {
     }
 `}
     </Text>
-    <SubscriptionComponent channel={channel} />
-    <PublishComponent channel={channel} />
+    <SubscriptionComponent channel={channel} operation={subscribeOperation} />
+    <PublishComponent channel={channel} operation={publishOperation} />
     <Text>{`
 }
     `}</Text>

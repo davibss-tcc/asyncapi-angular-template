@@ -1,6 +1,6 @@
 import { AsyncAPIDocument, Channel } from '@asyncapi/parser';
 import React from 'react';
-import ServiceComponent from '../../../components/ServiceComponent';
+import MQTTServiceComponent from '../../../components/MQTTServiceComponent';
 import { File, Text } from '@asyncapi/generator-react-sdk';
 
 /**
@@ -20,7 +20,7 @@ export default function Services({ asyncapi, params }) {
 
     var generatedFiles = [];
     for (let channel of channels) {
-        generatedFiles.push(ServiceComponent({channel: channel}));
+        generatedFiles.push(MQTTServiceComponent({servers: asyncapi.servers().collections, channel: channel}));
     }
 
     return generatedFiles;
