@@ -1,8 +1,9 @@
 import { File, Text } from '@asyncapi/generator-react-sdk';
-import { Channel } from "@asyncapi/parser";
 import SubscriptionComponent from './SubscriptionComponent';
 import PublishComponent from './PublishComponent';
 import { sanitizeString } from '../util/sanitizeString';
+import { ImportServerComponent } from './ImportServerComponent';
+import { chooseEnvironment } from '../util/chooseEnvironment';
 
 function getRequiredSchemas(channel) {
     var operations = channel.operations().collections;
@@ -12,7 +13,7 @@ function getRequiredSchemas(channel) {
     return importSchemas;
 }
 
-export default function MQTTServiceComponent({ servers, channel }) {
+export default function MQTTServiceComponent({ servers, channel, params }) {
     var channelName = sanitizeString(channel.id());
     
     var fileName = `${channelName}-mqtt-service.ts`;
@@ -31,6 +32,8 @@ export default function MQTTServiceComponent({ servers, channel }) {
         }
     }
 
+    var choosedEnvironment = chooseEnvironment(servers, params);
+
     return (
 <File name={fileName}>
     <Text>
@@ -39,11 +42,7 @@ import { Injectable } from '@angular/core';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subject, Subscription } from 'rxjs';
 import { ${requiredSchemas} } from '../models';
-import { environment } from '../environments/environment.development';
-${servers.map(server => {
-    return `import { ${server.url()} } from '${`environment.${protocol}.${serverName}.ts`}'`;
-})}
-
+${ImportServerComponent(servers)}
 
 @Injectable({
 providedIn: 'root'
@@ -56,11 +55,11 @@ export class ${channelName}Service {
     private subscription${channelName}: Subscription | undefined;
 
     private MQTT_SERVICE_OPTIONS = {
-        hostname: environment.broker.hostname,
-        port: environment.broker.port,
-        clean: environment.broker.clean,
-        connectTimeout: environment.broker.connectTimeout,
-        reconnectPeriod: environment.broker.reconnectPeriod,
+        hostname: ${choosedEnvironment}.broker.hostname,
+        port: ${choosedEnvironment}.broker.port,
+        clean: ${choosedEnvironment}.broker.clean,
+        connectTimeout: ${choosedEnvironment}.broker.connectTimeout,
+        reconnectPeriod: ${choosedEnvironment}.broker.reconnectPeriod,
         clientId: "Angular client" + new Date().toLocaleString()
     }
 

@@ -9,12 +9,18 @@
         "supportedProtocols": [
             "mqtt",
             "kafka",
-            "ws"
+            "ws",
+            "secure-mqtt"
         ],
         "parameters": {
             "initializeEnum": {
                 "description": "Initialize or not initialize Enum with values",
                 "default": "false",
+                "required": false
+            },
+            "protocol": {
+                "description": "Protocol for the generated client, the supported protocols are: mqtt, secure-mqtt, kafka and ws. The default is mqtt",
+                "default": "mqtt",
                 "required": false
             }
         }

@@ -16,10 +16,12 @@ export default function Environment({ asyncapi }) {
 
         const sanitizedProtocol = protocol.replace("-", "_");
 
+        const environmentConstant = `${sanitizedProtocol}${capitalizeString(serverName)}Environment`;
+
         return (
             <File name={`environment.${protocol}.${serverName}.ts`}>
 {`
-export const ${sanitizedProtocol}${capitalizeString(serverName)}Environment = {
+export const ${environmentConstant} = {
     broker: {
         url: '${server.url()}',
         hostname: '${server.url()}',

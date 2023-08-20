@@ -20,7 +20,11 @@ export default function Services({ asyncapi, params }) {
 
     var generatedFiles = [];
     for (let channel of channels) {
-        generatedFiles.push(MQTTServiceComponent({servers: asyncapi.servers().collections, channel: channel}));
+        generatedFiles.push(MQTTServiceComponent({
+            servers: asyncapi.servers().collections, 
+            channel: channel,
+            params: params
+        }));
     }
 
     return generatedFiles;
