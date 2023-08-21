@@ -15,20 +15,22 @@ export function EnumComponent(model, generateInitialize) {
      * @param {number} index 
      */
     function renderConstant(constant, index) {
+        let result = "";
         if (generateInitialize === "true") {
             if (constant.search("=")) {
                 const [constantName, constantInitialize] = constant.split("=");
-                return `${constantName} = ${constantInitialize}`
+                result = `${constantName} = ${constantInitialize}`
             } else {
-                return `${constantName} = ${index}`
+                result = `${constantName} = ${index}`
             }
         } else {
             if (constant.search("=")) {
-                return constant.split("=")[0];
+                result = constant.split("=")[0];
             } else {
-                return constant;
+                result = constant;
             }
         }
+        return result;
     }
 
     return (
