@@ -3,6 +3,7 @@ import { capitalizeString } from "./stringUtil";
 export function chooseEnvironment(servers, params) {
     let choosedEnvironment = "";
 
+    let index = 0;
     for (let server of servers) {
         const protocol = server.protocol();
         const serverName = server.id();
@@ -15,6 +16,7 @@ export function chooseEnvironment(servers, params) {
         if (choosedEnvironment === "" && index === servers.length - 1) {
             choosedEnvironment = environmentConstant;
         }
+        index+=1;
     }
     
     return choosedEnvironment;

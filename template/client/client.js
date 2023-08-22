@@ -3,6 +3,7 @@ import React from 'react';
 import Models from './models/model';
 import Services from './services/services';
 import Environment from './environments/environment';
+import Implementation from './implementation/implementation.ts';
 
 /**
  * @typedef TemplateParameters
@@ -17,6 +18,7 @@ export default function Client({ asyncapi, params }) {
     return [
         <Environment />,
         <Models />,
-        <Services />
+        <Services />,
+        <Implementation />
     ];
 }
