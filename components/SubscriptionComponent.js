@@ -13,6 +13,14 @@ export default function SubscriptionComponent({ channel }) {
     return (
         <Text>
 {`
+subscribeAll() {
+    this.subscribe${sanitizeString(channelName)}(() => {});    
+}
+
+unsubscribeAll() {
+    this.unsubscribe${sanitizeString(channelName)}();
+}
+
 subscribe${sanitizeString(channelName)}(callback: (message: IMqttMessage) => void, options?: {topic?: string}) {
     const topicName = options?.topic ?? "${channel.id()}";
 

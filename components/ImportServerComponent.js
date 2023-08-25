@@ -1,6 +1,6 @@
 import { capitalizeString } from "../util/stringUtil";
 
-export function ImportServerComponent(servers) {
+export default function ImportServerComponent(servers) {
     return servers.map((server) => {
         const protocol = server.protocol();
         const serverName = server.id();

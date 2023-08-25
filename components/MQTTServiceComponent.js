@@ -2,7 +2,7 @@ import { File, Text } from '@asyncapi/generator-react-sdk';
 import SubscriptionComponent from './SubscriptionComponent';
 import PublishComponent from './PublishComponent';
 import { sanitizeString } from '../util/sanitizeString';
-import { ImportServerComponent } from './ImportServerComponent';
+import ImportServerComponent from './ImportServerComponent';
 import { chooseEnvironment } from '../util/chooseEnvironment';
 
 function getRequiredSchemas(channel) {

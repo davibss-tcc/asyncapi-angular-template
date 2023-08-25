@@ -3,7 +3,7 @@ import React from 'react';
 import Models from './models/model';
 import Services from './services/services';
 import Environment from './environments/environment';
-import Implementation from './implementation/implementation.ts';
+import Implementation from './implementation/implementation';
 
 /**
  * @typedef TemplateParameters
