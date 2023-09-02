@@ -28,12 +28,12 @@
     "dependencies": {
         "@asyncapi/generator-react-sdk": "^0.2.25",
         "@asyncapi/modelina": "^1.8.10",
-        "@asyncapi/parser": "^2.1.0"
+        "@asyncapi/parser": "^2.1.0",
+        "prettier": "^2.8.8"
     },
     "devDependencies": {
         "@angular/core": "^16.2.0",
         "ngx-mqtt": "^16.1.0",
-        "prettier": "^2.8.8",
         "rimraf": "^5.0.0",
         "typescript": "^5.1.6"
     },
