@@ -27,7 +27,7 @@ const formatAllOutputFiles = function(dirPath) {
 };
 
 const removeUnnecessaryFiles = function(dirPath, zipFileName) {
-  rimraf(dirPath, {
+  rimraf.sync(dirPath, {
     preserveRoot: false,
     filter: (filePath, ent) => {
       const isRootDir = filePath === dirPath;
@@ -37,7 +37,7 @@ const removeUnnecessaryFiles = function(dirPath, zipFileName) {
   });
 }
 
-const zipFiles = function(dirPath) {
+const zipFiles = async function(dirPath) {
   const zipFileName = '/asyncapi_angular_client.zip';
   const output = fs.createWriteStream(path.join(dirPath, zipFileName));
 
@@ -57,18 +57,18 @@ const zipFiles = function(dirPath) {
   archive.pipe(output);
   archive.glob("**/!(*.zip)", { cwd: dirPath, dot: true })
 
-  archive.finalize();
+  await archive.finalize();
 }
 
 /**
  * Format all source files with indentations and new lines
  */
 module.exports = {
-    'generate:after': (generator) => {
+    'generate:after': async (generator) => {
         let pathToDir = path.resolve(generator.targetDir, '');
         formatAllOutputFiles(pathToDir);
         if (generator.templateParams.zip === "true") {
-          zipFiles(pathToDir);
+          await zipFiles(pathToDir);
         }
     }
 };
