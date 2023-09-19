@@ -11,7 +11,8 @@ const formatAllOutputFiles = function(dirPath) {
     if (fs.statSync(filePath).isDirectory()) {
       formatAllOutputFiles(filePath);
     } else {
-      const text = await fs.readFile(filePath, {encoding: "utf-8"} , async (err, data) => {
+      if (filePath.endsWith(".ts")) {
+        const text = await fs.readFile(filePath, {encoding: "utf-8"} , async (err, data) => {
           const formatted = await prettier.format(data, {
               "semi": true,
               "singleQuote": true,
@@ -21,7 +22,8 @@ const formatAllOutputFiles = function(dirPath) {
               "parser": "typescript"
           });
           fs.writeFileSync(filePath, formatted);
-      });
+        });
+      }
     } 
   });
 };
@@ -42,7 +44,8 @@ const zipFiles = async function(dirPath) {
   const output = fs.createWriteStream(path.join(dirPath, zipFileName));
 
   const archive = archiver('zip', {
-    zlib: { level: 9 } 
+    zlib: { level: 9 },
+    forceLocalTime: true
   });
 
   output.on('close', () => {

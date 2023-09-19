@@ -23,7 +23,12 @@ export default async function Models({ asyncapi, params }) {
                 marshalling: true
             }
             }
-        ]
+        ],
+        processorOptions: {
+            interpreter: {
+                ignoreAdditionalProperties: true
+            }
+        }
     });
 
     const generatedModels = await typescriptGenerator.generateCompleteModels(asyncapi, {moduleSystem: 'ESM'});

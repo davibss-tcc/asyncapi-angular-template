@@ -2,7 +2,6 @@ import { File, Text } from '@asyncapi/generator-react-sdk';
 import SubscriptionComponent from './SubscriptionComponent';
 import PublishComponent from './PublishComponent';
 import { sanitizeString } from '../util/sanitizeString';
-import ImportServerComponent from './ImportServerComponent';
 import { chooseEnvironment } from '../util/chooseEnvironment';
 
 function getRequiredSchemas(channel) {
@@ -32,7 +31,8 @@ export default function MQTTServiceComponent({ servers, channel, params }) {
         }
     }
 
-    var choosedEnvironment = chooseEnvironment(servers, params);
+    // var choosedEnvironment = chooseEnvironment(servers, params);
+    var choosedEnvironment = "environment";
 
     return (
 <File name={fileName}>
@@ -42,7 +42,7 @@ import { Injectable } from '@angular/core';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subject, Subscription } from 'rxjs';
 import { ${requiredSchemas} } from '../models';
-${ImportServerComponent(servers)}
+import { environment } from './../environments/environment';
 
 @Injectable({
 providedIn: 'root'
