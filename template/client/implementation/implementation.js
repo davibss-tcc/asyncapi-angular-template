@@ -15,7 +15,7 @@ import ImplementationComponent from '../../../components/ImplementationComponent
 export default function Implementation({ asyncapi, params }) {
   var generateFile = [];
 
-  const implementationFilePath = `${params.outputDir}/client/implementation/implementation.ts`;
+  const implementationFilePath = `${params.outputDir}/client/implementation/client_implementation.ts`;
   const implementationFileExists = fileExists(implementationFilePath);
   if (!implementationFileExists) {
     generateFile = ImplementationComponent(asyncapi);
