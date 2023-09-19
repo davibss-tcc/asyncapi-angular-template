@@ -13,8 +13,8 @@ export default function SubscriptionComponent({ channel }) {
     return (
         <Text>
 {`
-subscribeAll() {
-    this.subscribe${sanitizeString(channelName)}(() => {});    
+subscribeAll(callback: (message: IMqttMessage) => void) {
+    this.subscribe${sanitizeString(channelName)}(callback);    
 }
 
 unsubscribeAll() {

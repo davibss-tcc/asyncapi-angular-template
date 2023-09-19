@@ -9,7 +9,7 @@ export default function ImplementationComponent(asyncapi) {
     for (let channel of channels) {
         var channelName = sanitizeString(channel.id());
         var fileName = `${channelName}-mqtt-service`;
-        fileEntries.push([`${channelName}Service`, fileName]);
+        fileEntries.push([`${channelName}Service`, fileName, channelName]);
     }
 
     return (
@@ -31,7 +31,14 @@ export class ClientImplementationService {
   }
 
   subscribeToAllServices() {
-    ${fileEntries.map(fileEntry => `this.${fileEntry[0]}.subscribeAll()`).join("\n")}
+    ${fileEntries.map(fileEntry => {
+      const subscribeName = `subscribe${fileEntry[2]}`;
+      return `this.${fileEntry[0]}.${subscribeName}((message) => {
+        const parsedObject = JSON.parse(message.payload.toString());
+        // TODO: Implement your code here
+        console.log(parsedObject);
+      })`
+    }).join("\n")}
   }
 
   unsubscribeToAllServices() {
