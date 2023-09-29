@@ -1,5 +1,7 @@
 import { File } from '@asyncapi/generator-react-sdk';
 import { Server } from '@asyncapi/parser';
+import * as crypto from "crypto";
+
 
 /**
  * 
@@ -21,6 +23,9 @@ export function EnvironmentProtocol(target, environmentConstant, server) {
 <File name={`environment${targetSubstring}.ts`}>
 {`\
 export const ${environmentConstant} = {
+clientInfo: {
+    clientId: "${crypto.randomUUID()}"
+},
 broker: {
     url: '${server.url()}',
     hostname: '${server.url()}',

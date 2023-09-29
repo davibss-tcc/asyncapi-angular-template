@@ -1,8 +1,9 @@
 import { File, Text } from '@asyncapi/generator-react-sdk';
-import { AsyncAPIDocument } from '@asyncapi/parser';
+import { AsyncAPIDocument, Schema } from '@asyncapi/parser';
 import React from 'react';
 import { TypeScriptGenerator, FormatHelpers, TS_COMMON_PRESET, ConstrainedEnumModel } from '@asyncapi/modelina';
 import { EnumComponent } from '../../../components/EnumComponent';
+import CustomTypescriptPresetModel from '../../../components/model/CustomTypescriptPresetModel';
 
 /**
  * @typedef TemplateParameters
@@ -18,10 +19,7 @@ export default async function Models({ asyncapi, params }) {
         modelType: 'class',
         presets: [
             {
-            preset: TS_COMMON_PRESET,
-            options: {
-                marshalling: true
-            }
+                preset: CustomTypescriptPresetModel()
             }
         ],
         processorOptions: {
@@ -30,6 +28,12 @@ export default async function Models({ asyncapi, params }) {
             }
         }
     });
+
+    /** @type {Set<Schema>} */
+    let schemas = new Set([...asyncapi.schemas().all().filter(schema => schema.type() === 'object').map(schema => schema.id())]);
+    for (let schema of schemas.values()) {        
+        // schema.
+    }
 
     const generatedModels = await typescriptGenerator.generateCompleteModels(asyncapi, {moduleSystem: 'ESM'});
     const files = [];

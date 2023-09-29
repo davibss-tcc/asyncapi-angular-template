@@ -60,7 +60,7 @@ export class ${channelName}Service {
         clean: ${choosedEnvironment}.broker.clean,
         connectTimeout: ${choosedEnvironment}.broker.connectTimeout,
         reconnectPeriod: ${choosedEnvironment}.broker.reconnectPeriod,
-        clientId: "Angular client" + new Date().toLocaleString()
+        clientId: ${choosedEnvironment}.clientInfo.clientId
     }
 
     constructor () {
