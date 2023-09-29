@@ -29,12 +29,6 @@ export default async function Models({ asyncapi, params }) {
         }
     });
 
-    /** @type {Set<Schema>} */
-    let schemas = new Set([...asyncapi.schemas().all().filter(schema => schema.type() === 'object').map(schema => schema.id())]);
-    for (let schema of schemas.values()) {        
-        // schema.
-    }
-
     const generatedModels = await typescriptGenerator.generateCompleteModels(asyncapi, {moduleSystem: 'ESM'});
     const files = [];
     generatedModels.forEach(generatedModel => {
