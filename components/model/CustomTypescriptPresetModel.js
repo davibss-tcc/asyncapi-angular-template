@@ -70,17 +70,19 @@ function renderFromJsonString(model, properties) {
  * 
  * @returns {TypeScriptPreset}
  */
-export default function CustomTypescriptPresetModel() {
+export default function CustomTypescriptPresetModel(params) {
     return {
         enum: {
             item({content,inputModel,item,model,options,renderer}) {
                 let result = "";
                 let constant = item.value.slice(1,-1);
+                const index = model.values.map(i => i.value).findIndex(value => value === item.value);
+                const initializeEnum = params.initializeEnum === "true";
                 if (constant.search("=")) {
                     const [constantName, constantInitialize] = constant.split("=");
-                    result = `${constantName} = ${constantInitialize},`
+                    result = `${constantName} = ${initializeEnum ? index + 1 : constantInitialize},`
                 } else {
-                    result = `${constant}`
+                    result = `${constant}${initializeEnum ? ` = ${index}`: ""}`
                 }
                 return result;
             }

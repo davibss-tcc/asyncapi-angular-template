@@ -19,7 +19,7 @@ export default async function Models({ asyncapi, params }) {
         modelType: 'class',
         presets: [
             {
-                preset: CustomTypescriptPresetModel()
+                preset: CustomTypescriptPresetModel(params)
             }
         ],
         processorOptions: {
