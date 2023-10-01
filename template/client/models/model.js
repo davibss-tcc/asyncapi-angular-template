@@ -33,11 +33,11 @@ export default async function Models({ asyncapi, params }) {
     const files = [];
     generatedModels.forEach(generatedModel => {
         const modelFileName = `${FormatHelpers.toPascalCase(generatedModel.modelName)}.ts`;
-        if (generatedModel.model instanceof ConstrainedEnumModel) {
-            files.push(<File name={modelFileName}>{EnumComponent(generatedModel.model, params.initializeEnum)}</File>);
-        } else {
-            files.push(<File name={modelFileName}>{generatedModel.result}</File>);
-        }
+        // if (generatedModel.model instanceof ConstrainedEnumModel) {
+            // files.push(<File name={modelFileName}>{EnumComponent(generatedModel.model, params.initializeEnum)}</File>);
+        // } else {
+        files.push(<File name={modelFileName}>{generatedModel.result}</File>);
+        // }
     });
 
     files.push((

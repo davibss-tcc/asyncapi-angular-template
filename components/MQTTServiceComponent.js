@@ -86,8 +86,8 @@ export class ${channelName}Service {
     }
 `}
     </Text>
-    <SubscriptionComponent channel={channel} operation={subscribeOperation} />
-    <PublishComponent channel={channel} operation={publishOperation} />
+    {subscribeOperation && <SubscriptionComponent channel={channel} operation={subscribeOperation} />}
+    {publishOperation && <PublishComponent channel={channel} operation={publishOperation} />}
     <Text>{`
 }
     `}</Text>
