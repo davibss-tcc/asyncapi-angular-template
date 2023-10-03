@@ -2,7 +2,7 @@ const angular = require('@angular/cli');
 const run = angular.default;
 
 module.exports = {
-    'generate:before': (generator) => {
+    'generate:before': async (generator) => {
         if (generator.templateParams.onlySourceFiles !== "true") {
             const angularAppName = 'angular-asyncapi-client';
             const options = {
@@ -19,14 +19,14 @@ module.exports = {
                 ]
             };
             process.chdir(generator.targetDir);
-            run(options)
-            .then(() => {
-                console.log('angular app successfully generated');
+            try {
+                const result = await run(options);
+                console.log('angular app successfully generated, code: ' + result);
                 generator.targetDir = `${generator.targetDir}/${angularAppName}/src/app`;
-            })
-            .catch(() => {
+            } catch {
                 console.log('some error has occurred while generating angular code');
-            });
+            }
+            process.chdir(process.env.PWD);
         }
     }
 };
