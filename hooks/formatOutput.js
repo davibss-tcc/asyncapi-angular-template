@@ -68,7 +68,11 @@ const zipFiles = async function(dirPath) {
  */
 module.exports = {
     'generate:after': async (generator) => {
-        let pathToDir = path.resolve(generator.targetDir, '');
+        /** @type string */
+        let pathToDir = path.resolve(generator.targetDir);
+        if (generator.templateParams.onlySourceFiles === "false") {
+          pathToDir = path.join(path.sep, ...pathToDir.split("/").slice(0,-3));
+        }
         formatAllOutputFiles(pathToDir);
         if (generator.templateParams.zip === "true") {
           await zipFiles(pathToDir);
