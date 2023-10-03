@@ -27,10 +27,16 @@
                 "description": "Boolean value to zip file or not",
                 "default": "false",
                 "required": false
+            },
+            "onlySourceFiles": {
+                "description": "Choose whether this template will generate an entire Angular application or just source files",
+                "default": "false",
+                "required": false
             }
         }
     },
     "dependencies": {
+        "@angular/cli": "^16.2.4",
         "@asyncapi/generator-react-sdk": "^0.2.25",
         "@asyncapi/modelina": "^1.8.10",
         "@asyncapi/parser": "^2.1.0",
@@ -40,6 +46,7 @@
     },
     "devDependencies": {
         "@angular/core": "^16.2.0",
+        "@angular/router": "^16.2.0",
         "ngx-mqtt": "^16.1.0",
         "typescript": "^5.1.6"
     },
