@@ -30,7 +30,7 @@
             },
             "onlySourceFiles": {
                 "description": "Choose whether this template will generate an entire Angular application or just source files",
-                "default": "false",
+                "default": "true",
                 "required": false
             }
         }
