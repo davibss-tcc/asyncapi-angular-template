@@ -1,5 +1,6 @@
 import { ConstrainedObjectModel, TypeScriptPreset } from "@asyncapi/modelina";
 import { ConstrainedEnumModel } from "@asyncapi/modelina";
+import { extractFirstEnumFromModel } from "../../util/enumUtil";
 
 function renderPublisherId() {
     return `\
@@ -49,7 +50,7 @@ function renderToJsonString(model, properties) {
 function renderFromJsonString(model, properties) {
     const modelName = model.name;
     return `
-    public static from_json(value: Object): ${modelName} | undefined {
+    public static from_json(value: any): ${modelName} {
         let result: ${modelName} = new ${modelName}();
 
         try {
@@ -98,7 +99,8 @@ export default function CustomTypescriptPresetModel(params) {
                         let requiredArgument = `${propertyName}: ${propertyType}`;
                         let nonRequiredArgument = `${propertyName}?: ${propertyType}`;
                         if (model.properties[propertyName] && model.properties[propertyName].property.ref instanceof ConstrainedEnumModel) {
-                            let defaultEnum = `${propertyType}[Object.keys(${propertyType})[0]]`;
+                            let firstEnum = extractFirstEnumFromModel(model.properties[propertyName].property.ref);
+                            let defaultEnum = `${propertyType}.${firstEnum}`;
                             requiredArgument = `${propertyName}: ${propertyType} = ${defaultEnum}`;
                         }
                         return required ? requiredArgument : nonRequiredArgument;

@@ -1,8 +1,7 @@
 import { File, Text } from '@asyncapi/generator-react-sdk';
-import { AsyncAPIDocument, Schema } from '@asyncapi/parser';
+import { AsyncAPIDocument } from '@asyncapi/parser';
 import React from 'react';
-import { TypeScriptGenerator, FormatHelpers, TS_COMMON_PRESET, ConstrainedEnumModel } from '@asyncapi/modelina';
-import { EnumComponent } from '../../../components/EnumComponent';
+import { TypeScriptGenerator, FormatHelpers, ConstrainedUnionModel } from '@asyncapi/modelina';
 import CustomTypescriptPresetModel from '../../../components/model/CustomTypescriptPresetModel';
 
 /**
@@ -26,6 +25,20 @@ export default async function Models({ asyncapi, params }) {
             interpreter: {
                 ignoreAdditionalProperties: true
             }
+        },
+        typeMapping: {
+            Array({ constrainedModel }) {
+                let arrayType = constrainedModel.valueModel.type;
+                if (constrainedModel.valueModel instanceof ConstrainedUnionModel) {
+                    if (constrainedModel.valueModel.union.find(model => model.type === 'any') && constrainedModel.valueModel.union.length > 1) {
+                        var nonAnyModel = constrainedModel.valueModel.union.filter(model => model.type !== 'any')[0];
+                        arrayType = `${nonAnyModel.type}`;
+                    } else {
+                        arrayType = `(${arrayType})`;
+                    }
+                }
+                return `${arrayType}[]`;
+            }
         }
     });
 
@@ -33,11 +46,7 @@ export default async function Models({ asyncapi, params }) {
     const files = [];
     generatedModels.forEach(generatedModel => {
         const modelFileName = `${FormatHelpers.toPascalCase(generatedModel.modelName)}.ts`;
-        // if (generatedModel.model instanceof ConstrainedEnumModel) {
-            // files.push(<File name={modelFileName}>{EnumComponent(generatedModel.model, params.initializeEnum)}</File>);
-        // } else {
         files.push(<File name={modelFileName}>{generatedModel.result}</File>);
-        // }
     });
 
     files.push((

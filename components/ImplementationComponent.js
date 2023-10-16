@@ -34,10 +34,9 @@ ${subscribeOperationsObjects.map(obj => {
   providedIn: 'root'
 })
 export class ClientImplementationService {
-
-  ${fileEntries.map(fileEntry => `private ${fileEntry[0]}: ${fileEntry[0]}`).join("\n")}
-
-  constructor () {
+  constructor (
+    ${fileEntries.map(fileEntry => `private ${fileEntry[0]}: ${fileEntry[0]}`).join(",")}
+  ) {
     this.subscribeToAllServices();
   }
 
