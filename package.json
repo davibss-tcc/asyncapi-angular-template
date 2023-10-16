@@ -40,6 +40,7 @@
         "@asyncapi/generator-react-sdk": "^0.2.25",
         "@asyncapi/modelina": "^1.8.10",
         "@asyncapi/parser": "^2.1.0",
+        "add-dependencies": "^1.1.0",
         "archiver": "^6.0.0",
         "prettier": "^2.8.8",
         "rimraf": "^5.0.0"

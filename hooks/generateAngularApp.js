@@ -38,6 +38,7 @@ module.exports = {
             process.chdir(generator.targetDir);
             try {
                 const result = await execShellCommand(`ng ${options.cliArgs.join(" ")}`);
+                const result_dependencies = await execShellCommand(`add-dependencies ${angularAppName}/package.json ngx-mqtt`);
                 console.log('Angular app generated successfully');
                 generator.targetDir = `${generator.targetDir}/${angularAppName}/src/app`;
             } catch(e) {
