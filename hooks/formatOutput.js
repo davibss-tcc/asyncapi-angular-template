@@ -71,9 +71,9 @@ module.exports = {
         /** @type string */
         let pathToDir = path.resolve(generator.targetDir);
         if (generator.templateParams.onlySourceFiles === "false") {
-          pathToDir = path.join(path.sep, ...pathToDir.split("/").slice(0,-3), 'angular-asyncapi-client', 'src');
+          pathToDir = path.join(path.sep, ...pathToDir.split("/").slice(0,-3));
         }
-        formatAllOutputFiles(pathToDir);
+        formatAllOutputFiles(path.join(pathToDir, 'angular-asyncapi-client', 'src'));
         if (generator.templateParams.zip === "true") {
           await zipFiles(pathToDir);
         }
