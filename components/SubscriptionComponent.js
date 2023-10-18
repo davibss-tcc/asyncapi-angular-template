@@ -1,10 +1,10 @@
-import { Channel } from "@asyncapi/parser";
+import { ChannelInterface } from "@asyncapi/parser/cjs";
 import { File, Text } from '@asyncapi/generator-react-sdk';
 import { sanitizeString } from '../util/sanitizeString';
 
 /**
  * 
- * @param {{channel: Channel}} _ 
+ * @param {{channel: ChannelInterface}} _ 
  */
 export default function SubscriptionComponent({ channel }) {
 
@@ -13,16 +13,8 @@ export default function SubscriptionComponent({ channel }) {
     return (
         <Text>
 {`
-subscribeAll(callback: (message: IMqttMessage) => void) {
-    this.subscribe${sanitizeString(channelName)}(callback);    
-}
-
-unsubscribeAll() {
-    this.unsubscribe${sanitizeString(channelName)}();
-}
-
-subscribe${sanitizeString(channelName)}(callback: (message: IMqttMessage) => void, options?: {topic?: string}) {
-    const topicName = options?.topic ?? "${channel.id()}";
+subscribe${sanitizeString(channelName)}(callback: (message: IMqttMessage) => void) {
+    const topicName = ${channelName.toUpperCase()}_TOPIC;
 
     this.subscription${channelName} = this.client?.observe(topicName, {qos: 0})
         .subscribe(callback);

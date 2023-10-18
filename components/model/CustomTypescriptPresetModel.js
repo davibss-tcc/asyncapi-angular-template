@@ -18,7 +18,7 @@ function renderPublisherId() {
 function renderToString() {
     return `
     public toString() {
-        return JSON.stringify(this.to_json());
+        return JSON.stringify(this);
     }`;
 }
 
@@ -29,12 +29,12 @@ function renderToString() {
  */
 function renderToJsonString(model, properties) {
     return `\
-    public to_json() {
+    public toJSON() {
         return {
             ${
                 Object.entries(model.properties).map(([propertyName, property]) => {
                     if (property.property.ref instanceof ConstrainedObjectModel) {
-                        return `${propertyName}: this.${propertyName}?.to_json()`;
+                        return `${propertyName}: this.${propertyName}?.toJSON()`;
                     }
                     return `${propertyName}: this.${propertyName}`;
                 })

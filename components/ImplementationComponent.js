@@ -61,7 +61,7 @@ function renderPublishAtSubscription(publishOperation, fileEntry) {
 function renderUnsubscribeToAllServices(fileEntries) {
   return `\
     unsubscribeToAllServices() {
-      ${fileEntries.map(fileEntry => `this.${fileEntry[0]}.unsubscribeAll()`).join("\n")}
+      ${fileEntries.map(fileEntry => `this.${fileEntry[0]}.unsubscribe${fileEntry[2]}()`).join("\n")}
     }\
   `;
 }

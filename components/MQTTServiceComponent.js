@@ -44,6 +44,7 @@ import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subject, Subscription } from 'rxjs';
 import { ${requiredSchemas} } from '../models';
 import { environment } from './../environments/environment';
+import { ${channelName.toUpperCase()}_TOPIC } from './topics';
 
 @Injectable({
 providedIn: 'root'
@@ -51,7 +52,7 @@ providedIn: 'root'
 export class ${channelName}Service {
 
     private _mqttService: MqttService;
-    private client: any;
+    private client: MqttService;
 
     private subscription${channelName}: Subscription | undefined;
 

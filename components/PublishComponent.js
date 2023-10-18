@@ -1,10 +1,10 @@
-import { Channel, Operation } from "@asyncapi/parser";
+import { ChannelInterface, OperationInterface } from "@asyncapi/parser/cjs";
 import { File, Text } from '@asyncapi/generator-react-sdk';
 import { sanitizeString } from '../util/sanitizeString';
 
 /**
  * 
- * @param {{channel: Channel, operation: Operation}} _ 
+ * @param {{channel: ChannelInterface, operation: OperationInterface}} _ 
  */
 export default function PublishComponent({ channel, operation }) {
     var channelName = sanitizeString(channel.id());
@@ -13,9 +13,9 @@ export default function PublishComponent({ channel, operation }) {
     return (
         <Text>
 {`
-unsafePublish${channelName}(payload: ${payloadType}, options?: {topic?: string}) {
-    const topicName = options?.topic ?? "${channel.id()}";
-    const stringfiedPayload = JSON.stringify(payload.to_json());
+unsafePublish${channelName}(payload: ${payloadType}) {
+    const topicName = ${channelName.toUpperCase()}_TOPIC;
+    const stringfiedPayload = JSON.stringify(payload);
 
     this.client.unsafePublish(topicName, stringfiedPayload, {qos: 0});
 }
