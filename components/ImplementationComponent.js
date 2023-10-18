@@ -52,8 +52,8 @@ export class ClientImplementationService {
 
 function renderPublishAtSubscription(publishOperation, fileEntry) {
   return publishOperation ? `\
-    if (subscribeMessage.publisher_id === undefined || subscribeMessage.publisher_id !== environment.clientInfo.clientId) {
-      subscribeMessage.publisher_id = environment.clientInfo.clientId;
+    if (subscribeMessage.publisher_id === undefined || subscribeMessage.publisher_id !== this.${fileEntry[0]}.MQTT_SERVICE_OPTIONS.clientId) {
+      subscribeMessage.publisher_id = this.${fileEntry[0]}.MQTT_SERVICE_OPTIONS.clientId;
       this.${fileEntry[0]}.unsafePublish${fileEntry[2]}(subscribeMessage);
     }` : "";
 }

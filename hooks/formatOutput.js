@@ -11,7 +11,7 @@ const formatAllOutputFiles = function(dirPath) {
     if (fs.statSync(filePath).isDirectory()) {
       formatAllOutputFiles(filePath);
     } else {
-      if (filePath.endsWith(".ts")) {
+      if (filePath.endsWith(".ts") && !filePath.endsWith("node_modules")) {
         const text = await fs.readFile(filePath, {encoding: "utf-8"} , async (err, data) => {
           const formatted = await prettier.format(data, {
               "semi": true,
@@ -71,7 +71,7 @@ module.exports = {
         /** @type string */
         let pathToDir = path.resolve(generator.targetDir);
         if (generator.templateParams.onlySourceFiles === "false") {
-          pathToDir = path.join(path.sep, ...pathToDir.split("/").slice(0,-3));
+          pathToDir = path.join(path.sep, ...pathToDir.split("/").slice(0,-3), 'angular-asyncapi-client', 'src');
         }
         formatAllOutputFiles(pathToDir);
         if (generator.templateParams.zip === "true") {

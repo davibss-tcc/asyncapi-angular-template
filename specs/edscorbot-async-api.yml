@@ -85,7 +85,7 @@ info:
   
 servers:
   mosquitto:
-    url: host.to.be.defined
+    url: 127.0.0.1
     protocol: secure-mqtt
     description: Mosquitto test broker hosted at University of Sevilla
     #security:

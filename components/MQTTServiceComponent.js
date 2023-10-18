@@ -3,6 +3,7 @@ import SubscriptionComponent from './SubscriptionComponent';
 import PublishComponent from './PublishComponent';
 import { sanitizeString } from '../util/sanitizeString';
 import { chooseEnvironment } from '../util/chooseEnvironment';
+import * as crypto from "crypto";
 
 function getRequiredSchemas(channel) {
     var operations = channel.operations().collections;
@@ -54,13 +55,13 @@ export class ${channelName}Service {
 
     private subscription${channelName}: Subscription | undefined;
 
-    private MQTT_SERVICE_OPTIONS = {
+    MQTT_SERVICE_OPTIONS = {
         hostname: ${choosedEnvironment}.broker.hostname,
         port: ${choosedEnvironment}.broker.port,
         clean: ${choosedEnvironment}.broker.clean,
         connectTimeout: ${choosedEnvironment}.broker.connectTimeout,
         reconnectPeriod: ${choosedEnvironment}.broker.reconnectPeriod,
-        clientId: ${choosedEnvironment}.clientInfo.clientId
+        clientId: "${crypto.randomUUID()}"
     }
 
     constructor () {

@@ -22,9 +22,7 @@ export default function AppComponent({asyncapi, params}) {
     <Text>
 {`\
 import { Component } from '@angular/core';
-${services.map(service => {
-  return `import { ${service.serviceName} } from './client/services/${service.servicePath}'`
-}).join("\n")}
+import { ClientImplementationService } from './client/implementation/client_implementation';
 
 @Component({
   selector: 'app-root',
@@ -34,11 +32,7 @@ ${services.map(service => {
 export class AppComponent {
   title = 'angular-asyncapi-client';
 
-  constructor(
-    ${services.map(service => {
-      return `private ${service.serviceVariableName}: ${service.serviceName}`;
-    }).join(",")}
-  ) {}
+  constructor(private clientImplementation: ClientImplementationService) {}
 }
 `}
     </Text>

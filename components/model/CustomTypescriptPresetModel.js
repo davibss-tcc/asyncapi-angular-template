@@ -31,12 +31,16 @@ function renderToJsonString(model, properties) {
     return `\
     public to_json() {
         return {
-            ${Object.entries(model.properties).map(([propertyName, property]) => {
-                if (property.property.ref instanceof ConstrainedObjectModel) {
-                    return `${propertyName}: this.${propertyName}?.to_json()`;
-                }
-                return `${propertyName}: this.${propertyName}`;
-            }).join(",\n")}
+            ${
+                Object.entries(model.properties).map(([propertyName, property]) => {
+                    if (property.property.ref instanceof ConstrainedObjectModel) {
+                        return `${propertyName}: this.${propertyName}?.to_json()`;
+                    }
+                    return `${propertyName}: this.${propertyName}`;
+                })
+                .concat("publisher_id: this.publisher_id")
+                .join(",\n")
+            }
         };
     }
     `;
@@ -54,12 +58,16 @@ function renderFromJsonString(model, properties) {
         let result: ${modelName} = new ${modelName}();
 
         try {
-                ${Object.entries(model.properties).map(([propertyName, property]) => {
-                if (property.property.ref instanceof ConstrainedObjectModel) {
-                    return `result.${propertyName} = ${property.property.type}.from_json(value["${propertyName}"]);`;
+                ${
+                    Object.entries(model.properties).map(([propertyName, property]) => {
+                        if (property.property.ref instanceof ConstrainedObjectModel) {
+                            return `result.${propertyName} = ${property.property.type}.from_json(value["${propertyName}"]);`;
+                        }
+                        return `result.${propertyName} = value["${propertyName}"];`;
+                    })
+                    .concat("result.publisher_id = value['publisher_id'];")
+                    .join("\n")
                 }
-                return `result.${propertyName} = value["${propertyName}"];`;
-            }).join("\n")}
         } catch(_){}
 
         return result;

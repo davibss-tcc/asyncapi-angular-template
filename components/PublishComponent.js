@@ -15,7 +15,7 @@ export default function PublishComponent({ channel, operation }) {
 {`
 unsafePublish${channelName}(payload: ${payloadType}, options?: {topic?: string}) {
     const topicName = options?.topic ?? "${channel.id()}";
-    const stringfiedPayload = JSON.stringify(payload);
+    const stringfiedPayload = JSON.stringify(payload.to_json());
 
     this.client.unsafePublish(topicName, stringfiedPayload, {qos: 0});
 }
