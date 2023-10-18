@@ -1,3 +1,8 @@
+/**
+ * 
+ * @param {string} textToBeSanitized 
+ * @returns string
+ */
 export function sanitizeString(textToBeSanitized) {
     var sanitizedText = textToBeSanitized;
     sanitizedText = sanitizedText.replace("/", "_");

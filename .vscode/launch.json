@@ -16,7 +16,9 @@
                 "--output",
                 "./output",
                 // "--install",
-                "--force-write"
+                "--force-write",
+                "-p",
+                "onlySourceFiles=false"
             ],
             "runtimeExecutable": "ag"
             // "program": "ag",
