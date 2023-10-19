@@ -41,7 +41,7 @@ export default function MQTTServiceComponent({ servers, channel, params }) {
 {`
 import { Injectable } from '@angular/core';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
-import { Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ${requiredSchemas} } from '../models';
 import { environment } from './../environments/environment';
 import { ${channelName.toUpperCase()}_TOPIC } from './topics';
@@ -68,6 +68,7 @@ export class ${channelName}Service {
     constructor () {
         this._mqttService = new MqttService(this.MQTT_SERVICE_OPTIONS);
         this.client = this._mqttService;
+        this.createConnection();
     }
 
     createConnection() {
