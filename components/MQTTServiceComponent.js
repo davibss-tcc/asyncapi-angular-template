@@ -62,7 +62,7 @@ export class ${channelName}Service {
         clean: ${choosedEnvironment}.broker.clean,
         connectTimeout: ${choosedEnvironment}.broker.connectTimeout,
         reconnectPeriod: ${choosedEnvironment}.broker.reconnectPeriod,
-        clientId: "${crypto.randomUUID()}"
+        clientId: crypto.randomUUID()
     }
 
     constructor () {

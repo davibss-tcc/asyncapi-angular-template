@@ -24,7 +24,7 @@ export function EnvironmentProtocol(target, environmentConstant, server) {
 {`\
 export const ${environmentConstant} = {
 clientInfo: {
-    clientId: "${crypto.randomUUID()}"
+    clientId: crypto.randomUUID()
 },
 broker: {
     url: '${server.url()}',
