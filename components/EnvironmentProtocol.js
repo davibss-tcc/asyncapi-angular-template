@@ -31,6 +31,7 @@ broker: {
     hostname: '${server.url()}',
     port: 8080,
     clean: true,
+    connectOnCreate: true,
     connectTimeout: 4000,
     reconnectPeriod: 3900
 }

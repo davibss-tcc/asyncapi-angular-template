@@ -1,9 +1,19 @@
 import { File, Text } from '@asyncapi/generator-react-sdk';
-import SubscriptionComponent from './SubscriptionComponent';
-import PublishComponent from './PublishComponent';
 import { sanitizeString } from '../util/sanitizeString';
-import { chooseEnvironment } from '../util/chooseEnvironment';
-import * as crypto from "crypto";
+
+function renderEmptyPublish() {
+    return `
+        // PUBLISH OPERATION NOT FOUND IN THIS CHANNEL, GENERATING EMPTY PUBLISH
+        override unsafePublish(payload: any): void {}
+    `;
+}
+
+function renderEmptySubscribe() {
+    return `
+        // SUBSCRIBE OPERATION NOT FOUND IN THIS CHANNEL, GENERATING EMPTY SUBSCRIBE
+        override subscribe(callback: (message: IMqttMessage) => void): void {}
+    `;
+}
 
 function getRequiredSchemas(channel) {
     var operations = channel.operations().collections;
@@ -32,68 +42,32 @@ export default function MQTTServiceComponent({ servers, channel, params }) {
         }
     }
 
-    // var choosedEnvironment = chooseEnvironment(servers, params);
-    var choosedEnvironment = "environment";
+    var topicImportConstant = `${channelName.toUpperCase()}_TOPIC`;
 
     return (
 <File name={fileName}>
     <Text>
-{`
+{`\
 import { Injectable } from '@angular/core';
-import { IMqttMessage, MqttService } from 'ngx-mqtt';
-import { Subscription } from 'rxjs';
 import { ${requiredSchemas} } from '../models';
-import { environment } from './../environments/environment';
-import { ${channelName.toUpperCase()}_TOPIC } from './topics';
+import { ${topicImportConstant} } from './topics';
+import { BaseService } from './base-service';
+import { IMqttMessage } from 'ngx-mqtt';
 
 @Injectable({
-providedIn: 'root'
+    providedIn: 'root'
 })
-export class ${channelName}Service {
-
-    private _mqttService: MqttService;
-    private client: MqttService;
-
-    private subscription${channelName}: Subscription | undefined;
-
-    MQTT_SERVICE_OPTIONS = {
-        hostname: ${choosedEnvironment}.broker.hostname,
-        port: ${choosedEnvironment}.broker.port,
-        clean: ${choosedEnvironment}.broker.clean,
-        connectTimeout: ${choosedEnvironment}.broker.connectTimeout,
-        reconnectPeriod: ${choosedEnvironment}.broker.reconnectPeriod,
-        clientId: crypto.randomUUID()
+export class ${channelName}Service extends BaseService<${requiredSchemas}> {
+    constructor() {
+        super();
+        this.topic = ${topicImportConstant};
     }
 
-    constructor () {
-        this._mqttService = new MqttService(this.MQTT_SERVICE_OPTIONS);
-        this.client = this._mqttService;
-        this.createConnection();
-    }
-
-    createConnection() {
-        try {
-        this.client?.connect();
-        } catch (error) {
-        console.log('mqtt.connect error', error);
-        }
-        this.client?.onConnect.subscribe(() => {
-        console.log('Connection succeeded!');
-        });
-        this.client?.onError.subscribe((error: any) => {
-        console.log('Connection failed', error);
-        });
-        this.client?.onMessage.subscribe((packet: any) => {
-        console.log(\`Received message \${packet.payload} from topic \${packet.topic}\`)
-        })
-    }
-`}
-    </Text>
-    {subscribeOperation && <SubscriptionComponent channel={channel} operation={subscribeOperation} />}
-    {publishOperation && <PublishComponent channel={channel} operation={publishOperation} />}
-    <Text>{`
+    ${!publishOperation ? renderEmptyPublish() : ""}
+    ${!subscribeOperation ? renderEmptySubscribe() : ""}
 }
-    `}</Text>
+`
+}</Text>
 </File>
 );
 }
