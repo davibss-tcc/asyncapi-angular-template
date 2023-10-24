@@ -1,6 +1,5 @@
 import { File, Text } from "@asyncapi/generator-react-sdk";
 import { sanitizeString } from "../util/sanitizeString";
-import { Channel } from "@asyncapi/parser";
 import { AsyncAPIDocument } from "@asyncapi/parser/cjs/models/v2/asyncapi";
 import { ChannelInterface } from "@asyncapi/parser/cjs/models";
 
@@ -50,12 +49,8 @@ export default function ImplementationComponent(asyncapi) {
   <Text>
 {`\
 import { Injectable, Type } from '@angular/core';
-import { environment } from '../environments/environment';
 ${services.map(service => `import { ${service.variableName} } from '../services/${service.fileName}';`).join("\n")}
-
-${subscribeOperationsObjects.map(obj => {
-  return `import { ${obj} } from '../models';`
-}).join("\n")}
+${subscribeOperationsObjects.map(obj => `import { ${obj} } from '../models';`).join("\n")}
 import { Subject } from 'rxjs';
 import { BaseService } from '../services/base-service';
 import { ${services.map(s => `${s.channelSanitizedName.toUpperCase()}_TOPIC`).join(",") }} from '../services/topics';

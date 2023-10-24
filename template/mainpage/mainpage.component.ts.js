@@ -41,7 +41,7 @@ export default function AppComponent({asyncapi, params}) {
 <File name="mainpage.component.ts">
     <Text>
 {`\
-import { Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { ClientImplementationService, TopicMappingInterface } from '../client/implementation/client_implementation';
 import { ALL_TOPICS } from '../client/services/topics';

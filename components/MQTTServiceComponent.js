@@ -52,7 +52,6 @@ import { Injectable } from '@angular/core';
 import { ${requiredSchemas} } from '../models';
 import { ${topicImportConstant} } from './topics';
 import { BaseService } from './base-service';
-import { IMqttMessage } from 'ngx-mqtt';
 
 @Injectable({
     providedIn: 'root'
