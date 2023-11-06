@@ -8,8 +8,6 @@
         "generator": ">=1.10.0 <2.0.0",
         "supportedProtocols": [
             "mqtt",
-            "kafka",
-            "ws",
             "secure-mqtt"
         ],
         "parameters": {
