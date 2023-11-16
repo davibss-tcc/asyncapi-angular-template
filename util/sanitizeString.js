@@ -9,3 +9,14 @@ export function sanitizeString(textToBeSanitized) {
     sanitizedText = sanitizedText.replace("\\", "_");
     return sanitizedText;
 }
+
+/**
+ * 
+ * @param {string} textToBeSanitized 
+ * @returns string
+ */
+export function sanitizeStringWithSlash(textToBeSanitized) {
+    var sanitizedText = textToBeSanitized;
+    sanitizedText = sanitizedText.replace("\\", "_");
+    return sanitizedText;
+}
