@@ -42,7 +42,7 @@ export default function ImplementationComponent(asyncapi) {
     }
 
     const subscribeOperations = channels.flatMap(channel => channel.operations()).filter(op => op.isSend());
-    const subscribeOperationsObjects = subscribeOperations.map(op => op.messages().all()[0].payload().id());
+    const subscribeOperationsObjects = [...new Set(subscribeOperations.map(op => op.messages().all()[0].payload().id()))];
 
     return (
 <File name="client_implementation.ts">
@@ -57,7 +57,7 @@ import { ${services.map(s => `${s.channelSanitizedName.toUpperCase()}_TOPIC`).jo
 
 export interface TopicMappingInterface {
   topic: string;
-  topicObject: Type<MetaInfoObject | CommandObject | MovedObject>;
+  topicObject: Type<${[...new Set(services.map(s => s.serviceObject))].join(" | ")}>;
   topicService: BaseService<any>;
 }
 
